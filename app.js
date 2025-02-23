@@ -28,19 +28,34 @@ function generate(longurl){
     return hashed
 }
 
+
+
+function isValidUrl(url){
+    if(url.includes(" ")||!url.includes(".")||url==''){
+        return false
+    } return true
+}
+
+
 app.post('/api/shorten', (req, res, next)=>{
+    if(isValidUrl(req.body.longurl)){
     const shorturl = generate(req.body.longurl)
     URLS.create({
         redirect: req.body.longurl,
         shortened: shorturl
     })
     res.status(200).json({msg: `localhost:5000/${shorturl}`})
+}else{
+    res.status(200).json({msg: `Please enter a valid URL!`})
+
+}
     return
 })
 
 app.get('/favicon.ico',(req, res, next)=>{
     res.status(200).send()
 })
+
 
 app.get('/:shortened', async(req, res, next)=>{
     const {shortened} = req.params
