@@ -15,7 +15,8 @@ body{
 input{
     outline: none;
     border: none;
-    border-bottom: solid white 3px;
+    border-radius: 0px 0px 5px 5px;
+    border-bottom: solid aquamarine 5px;
     background-color: black;
     color: white;
     height: 3em;
