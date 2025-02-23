@@ -36,7 +36,7 @@ app.get('/', (req, res, next) => {
 
 function generate(longurl) {
   const salt = crypto.randomBytes(6).toString('hex');
-  const hashed = crypto.pbkdf2Sync(longurl, salt, 100, 10, 'sha512').toString('hex');
+  const hashed = crypto.pbkdf2Sync(longurl, salt, 100, 7, 'sha512').toString('hex');
   return hashed;
 }
 
@@ -55,7 +55,8 @@ app.post('/api/shorten', async (req, res, next) => {
         redirect: req.body.longurl,
         shortened: shorturl,
       });
-      res.status(200).json({ msg: `localhost:${port}/${shorturl}` });
+
+      res.status(200).json({ msg: `${req.get('host')}/${shorturl}` });
     } catch (error) {
       console.error('Error creating URL:', error);
       res.status(500).json({ msg: 'Internal server error' }); // Handle creation error
