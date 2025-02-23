@@ -49,8 +49,8 @@ input::placeholder{
 }
 
 .result{
-    /* border: solid red 2px; */
-    background-color: rgb(36, 36, 36);
+    border: solid aquamarine 2px;
+    background-color: black;
     border-radius: 10px;
     width: fit-content;
     margin-top: 1em;
@@ -59,7 +59,32 @@ input::placeholder{
     text-align: center;
     display: flex;
     align-items: center;
-    display: none;
+    /* display: none; */
     justify-content: center;
     color: white;
+}
+#copy{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    font-size: 1em;
+    border:solid aquamarine 1px;
+    outline: none;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    margin: 1em;
+    display: block;
+    transition-property: "background-color", "color";
+    transition-duration: 0.3s;
+}
+
+#copy:hover{
+    background-color: aquamarine;
+    color: black
+}
+
+.bottom{
+    /* border: solid red 2px; */
+    display: none;
 }
