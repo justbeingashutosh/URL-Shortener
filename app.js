@@ -49,6 +49,13 @@ function isValidUrl(url) {
 
 app.post('/api/shorten', async (req, res, next) => {
   if (isValidUrl(req.body.longurl)) {
+    const longUrl = await URLS.findOne({redirect: req.body.longurl.toLowerCase()})
+    console.log(longUrl)
+    if(longUrl){
+        const short = longUrl.shortened
+        res.status(200).json({msg: `${req.get('host')}/${short}`})
+        return
+    }else{
     const shorturl = generate(req.body.longurl);
     try {
       await URLS.create({
@@ -61,6 +68,7 @@ app.post('/api/shorten', async (req, res, next) => {
       console.error('Error creating URL:', error);
       res.status(500).json({ msg: 'Internal server error' }); // Handle creation error
     }
+}
   } else {
     res.status(200).json({ msg: 'Please enter a valid URL!' });
   }
