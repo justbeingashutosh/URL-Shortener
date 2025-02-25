@@ -2,7 +2,7 @@ const togglePassword = document.getElementById('button-addon2')
 const passInput = document.getElementById('formGroupExampleInput2')
 const userInput = document.getElementById('autoSizingInputGroup')
 const msgdiv = document.getElementById('msg')
-const register=document.getElementById('register')
+const register = document.getElementById('register')
 register.addEventListener('click', ()=>{
     window.location.href = '/register'
 })
@@ -11,10 +11,9 @@ togglePassword.addEventListener('click', ()=>{
     if(togglePassword.innerHTML == `<i class="fa-regular fa-eye-slash"></i>`){
         togglePassword.innerHTML = `<i class="fa-regular fa-eye"></i>`
         passInput.type = "password"
-    }else{
+    } else {
         togglePassword.innerHTML = `<i class="fa-regular fa-eye-slash"></i>`
         passInput.type = "text"
-
     }
 })
 
@@ -37,11 +36,3 @@ userInput.addEventListener('focus', ()=>{
 
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-
-
-
-
-
-
-
-
