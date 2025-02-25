@@ -23,3 +23,26 @@ inputfield.addEventListener('focus', ()=>{
 copybtn.addEventListener('click', ()=>{
     navigator.clipboard.writeText(resdiv.textContent)
 })
+
+const loginbtn = document.getElementById('login')
+loginbtn.addEventListener('click', ()=>{
+    window.location.href = '/login'
+})
+
+const togglePassword = document.getElementById('button-addon2')
+const passInput = document.getElementById('formGroupExampleInput2')
+togglePassword.addEventListener('click', ()=>{
+    passInput.type = "text"
+    togglePassword.innerHTML = `<i class="fa-regular fa-eye-slash"></i>`
+})
+
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+
+
+
+
+
+
+

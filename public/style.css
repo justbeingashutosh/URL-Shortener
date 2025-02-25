@@ -12,6 +12,11 @@ body{
     font-family: "Quicksand";
 }
 
+.container{
+    max-width: fit-content;
+}
+
+
 input{
     outline: none;
     border: none;
@@ -79,12 +84,32 @@ input::placeholder{
     transition-duration: 0.3s;
 }
 
+#login{
+    position: absolute;
+    right: 2em;
+    border-radius: 5px;
+    background-color: aquamarine;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: black;
+    height: 3em;
+    width: fit-content;
+    font-weight: 600;
+    font-size: 1em;
+    top: 2em;
+} 
+
 #copy:hover{
     background-color: aquamarine;
     color: black
 }
 
 .bottom{
-    /* border: solid red 2px; */
     display: none;
 }
+
+.custom-tooltip {
+    --bs-tooltip-bg: aquamarine;
+    --bs-tooltip-color: black;
+  }
