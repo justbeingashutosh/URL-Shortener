@@ -10,4 +10,4 @@ The code checks for redundant links entered by the users and instead of generati
 The code also checks for variations of the same link. For example, "www.youtube.com", "https://www.youtube.com", "youtube.com" and "https://wwW.yoUtube.com" will all produce the same shortened URL.
 
 ## User Authentication
-Uses user authentication to store a history of URLs shortened by a user.
+Uses user authentication implemented using Passport JS and Express Sessions to store a history of URLs shortened by a user.
