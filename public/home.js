@@ -24,11 +24,10 @@ copybtn.addEventListener('click', ()=>{
     navigator.clipboard.writeText(resdiv.textContent)
 })
 
-const loginbtn = document.getElementById('login')
-loginbtn.addEventListener('click', ()=>{
-    window.location.href = '/login'
+const logoutbtn = document.getElementById('logout')
+logoutbtn.addEventListener('click', ()=>{
+    window.location.href = '/logout'
 })
-
 
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))

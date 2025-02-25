@@ -118,9 +118,30 @@ const strategy = new LocalStrategy(
 
 passport.use(strategy);
 
-app.get("/", (req, res, next) => {
+app.get("/", async(req, res, next) => {
+  if(req.session.passport){
+    const userInDb = await Users.findOne({_id: req.session.passport.user})
+    res.redirect(`/users/${userInDb.username}`)
+    return
+  }
   res.status(200).sendFile(path.join(__dirname, "./index.html"));
 });
+app.get('/users/:username', async(req, res, next)=>{
+  if(req.isAuthenticated()){
+  const {username} = req.params
+  const userInDb = await Users.findOne({_id: req.session.passport.user})
+  if(username == userInDb.username){
+    res.status(200).sendFile(path.join(__dirname, 'home.html'))
+    return
+  }else{
+    res.redirect(`/users/${userInDb.username}`)
+    return
+  }}else{
+    res.redirect('/login')
+    return
+  }
+  // console.log(username == req.session.passport.user)
+})
 
 function generate(longurl) {
   const salt = crypto.randomBytes(6).toString("hex");
@@ -174,7 +195,15 @@ app.get("/favicon.ico", (req, res, next) => {
 app.get("/login", (req, res, next) => {
   res.status(200).sendFile(path.join(__dirname, "/login.html"));
 });
-
+app.get('/logout', (req, res, next)=>{
+  req.logout((err)=>{
+    if(err){
+      return next(err)
+    }
+    res.redirect('/')
+      return
+  })
+})
 app.post("/login", async (req, res, next) => {
   console.log("Login request recieved");
   const { username, password } = req.body;

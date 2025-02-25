@@ -23,6 +23,8 @@ submitbtn.addEventListener('click', async()=>{
     if (msg.data.error){
         msgdiv.style.display = 'flex';
         msgdiv.textContent = msg.data.error
+    } else{
+        window.location.href = '/login'
     }
     console.log(msg)
 })

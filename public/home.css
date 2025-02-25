@@ -2,18 +2,26 @@
 body{
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 1fr 3fr;
     height: 100vh;
     width: 100vw;
     background-color: black;
     font-family: "Quicksand";
 }
-
+.history{
+    width: 100%;
+    height: 100%;
+    align-self: flex-end;
+    /* border: solid yellow 3px; */
+}
 .container{
     max-width: fit-content;
+    /* border: solid red 2px; */
+}
+.searchbardiv{
+    /* border: solid green 2px; */
+    padding-block: 1em;
 }
 
 
@@ -107,6 +115,8 @@ input::placeholder{
 
 .bottom{
     display: none;
+    width: 100%;
+    justify-content: center;
 }
 
 .custom-tooltip {
