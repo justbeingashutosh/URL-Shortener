@@ -9,5 +9,5 @@ The link is checked for spaces in between or absence of atleast a single '.', an
 The code checks for redundant links entered by the users and instead of generating a new shortened link each time, it returns a shortened link corresponding to the same route if it exists in the database.
 The code also checks for variations of the same link. For example, "www.youtube.com", "https://www.youtube.com", "youtube.com" and "https://wwW.yoUtube.com" will all produce the same shortened URL.
 
-## Upcoming Features
-Implementation of user authorization and identification to display a history of urls shortened by a particular client overtime.
+## User Authentication
+Uses user authentication implemented using Passport JS and Express Sessions to store a history of URLs shortened by a user.
