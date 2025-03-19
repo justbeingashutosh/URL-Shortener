@@ -45,11 +45,12 @@ function generatePass(password) {
   return { salt, hash };
 }
 
-const userSchema = {
+const userSchema = new mongoose.Schema({
   username: String,
   salt: String,
   hash: String,
-};
+  shortenedurls: {type: Object, default: {}},
+}, {minimize:false});
 
 const Users = mongoose.model("users", userSchema);
 
@@ -143,6 +144,31 @@ app.get('/users/:username', async(req, res, next)=>{
   // console.log(username == req.session.passport.user)
 })
 
+app.get('/users/:username/userdata', async(req, res, next)=>{
+  if(req.isAuthenticated()){
+    const {username} = req.params
+    if(req.session.passport){
+      const userInDb = await Users.findOne({_id: req.session.passport.user})
+      if(username == userInDb.username){
+        console.log("Recieved request to get user history...")
+        res.status(200).json({history: userInDb.shortenedurls, env: req.get("host")})
+        return
+      }else{
+        res.redirect(`/users/${userInDb.username}`)
+        return
+      }
+    }
+    else{
+      res.redirect('/login')
+      return
+    }
+  }
+  else{
+    res.redirect('/login')
+    return
+  }
+})
+
 function generate(longurl) {
   const salt = crypto.randomBytes(6).toString("hex");
   const hashed = crypto
@@ -166,17 +192,65 @@ app.post("/api/shorten", async (req, res, next) => {
     console.log(longUrl);
     if (longUrl) {
       const short = longUrl.shortened;
-      res.status(200).json({ msg: `${req.get("host")}/${short}` });
-      return;
+      const shortUrl = `${req.get("host")}/${short}`
+      if(req.session.passport){
+        console.log("Found user in db to append history to...")
+        const userInDb = await Users.findOne({_id: req.session.passport.user})
+        if(userInDb.shortenedurls){
+          console.log(longUrl.redirect, shortUrl)
+          await Users.updateOne(
+            { _id: req.session.passport.user },
+            { $set: { [`shortenedurls.${longUrl.redirect.replace(".", ",")}`]: shortUrl } }
+          )
+          // userInDb.shortenedurls[longUrl.redirect] = longUrl.shortened;
+          console.log("Appended history to shortenedurls existing link route")
+        await userInDb.save()
+        }else{
+          console.log("Did not find shortened urls field so created one. Existing link route")
+
+          await Users.updateOne(
+            { _id: req.session.passport.user },
+            { $set: { [`shortenedurls.${longUrl.redirect.replace(".", ",")}`]: shortUrl } }
+          )
+          // userInDb.shortenedurls = {}
+          await userInDb.save()
+        }
+        // await userInDb.save()
+      }
+      res.status(200).json({ msg: shortUrl, env: req.get("host") });
     } else {
       const shorturl = generate(req.body.longurl);
+      console.log(req.body.longurl)
       try {
         await URLS.create({
           redirect: req.body.longurl,
           shortened: shorturl,
         });
 
-        res.status(200).json({ msg: `${req.get("host")}/${shorturl}` });
+        if(req.session.passport){
+          console.log("Found user in db to append history to...")
+          const userInDb = await Users.findOne({_id: req.session.passport.user})
+          if(userInDb.shortenedurls){
+            console.log("Appended history to shortenedurls")
+            await Users.updateOne(
+              { _id: req.session.passport.user },
+              { $set: { [`shortenedurls.${req.body.longurl.replace(".", ",")}`]: shorturl } }
+            )
+            // userInDb.shortenedurls[req.body.longurl] = `${req.get("host")}/${shorturl}`
+            await userInDb.save()
+          }else{
+            console.log("Did not find shortened urls field so created one.")
+            await Users.updateOne(
+              { _id: req.session.passport.user },
+              { $set: { [`shortenedurls.${req.body.longurl.replace(".", ",")}`]: shorturl } }
+            )
+            // userInDb.shortenedurls = {}
+            // userInDb.shortenedurls[req.body.longurl] = `${req.get("host")}/${shorturl}`
+            await userInDb.save()
+          }
+          // await userInDb.save()
+        }
+        res.status(200).json({ msg: `${req.get("host")}/${shorturl}`, env: "" });
       } catch (error) {
         console.error("Error creating URL:", error);
         res.status(500).json({ msg: "Internal server error" }); // Handle creation error
@@ -185,7 +259,7 @@ app.post("/api/shorten", async (req, res, next) => {
   } else {
     res.status(200).json({ msg: "Please enter a valid URL!" });
   }
-  return;
+  next();
 });
 
 app.get("/favicon.ico", (req, res, next) => {
@@ -242,6 +316,7 @@ app.post("/register", async (req, res, next) => {
       username: username,
       salt: salt,
       hash: hash,
+      shortenedurls: {},
     });
     res.redirect("/login")
   } catch (error) {

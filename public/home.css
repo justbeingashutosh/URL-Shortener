@@ -41,12 +41,11 @@ input{
 input::placeholder{
     color: white;
 }
-
 #submit{
     border-radius: 5px;
     background-color: aquamarine;
     outline: none;
-    border: none;
+    border: none; 
     cursor: pointer;
     margin-left: 2em;
     height: 3em;
@@ -56,11 +55,9 @@ input::placeholder{
     font-weight: 600;
     font-size: 1em;
 }
-
 #submit:hover{
     box-shadow: 3px 3px 10px rgba(127, 255, 212, 0.926);
 }
-
 .result{
     border: solid aquamarine 2px;
     background-color: black;
@@ -123,3 +120,30 @@ input::placeholder{
     --bs-tooltip-bg: aquamarine;
     --bs-tooltip-color: black;
   }
+  .cardilac{
+    width: 300px;
+    height: fit-content;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    border: solid aquamarine 2px;
+    margin: 1em;
+    padding: 1em;
+    overflow: hidden;
+}
+.cardilac>p{
+    cursor: pointer;
+    transition-property: "text-decoration";
+    transition-duration: 0.3s;
+}
+.cardilac>p:hover{
+    text-decoration: underline;
+}
+.history{
+    display: flex;
+    flex-wrap: wrap;
+}
+.cardilac>img{
+    height: 20px;
+    width: 20px;
+}
