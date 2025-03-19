@@ -120,9 +120,8 @@ const strategy = new LocalStrategy(
 passport.use(strategy);
 
 app.get("/", async(req, res, next) => {
-  if(req.session.passport){
-    const userInDb = await Users.findOne({_id: req.session.passport.user})
-    res.redirect(`/users/${userInDb.username}`)
+  if(req.user){
+    res.redirect(`/users/${req.user.username}`)
     return
   }
   res.status(200).sendFile(path.join(__dirname, "./index.html"));
@@ -130,7 +129,7 @@ app.get("/", async(req, res, next) => {
 app.get('/users/:username', async(req, res, next)=>{
   if(req.isAuthenticated()){
   const {username} = req.params
-  const userInDb = await Users.findOne({_id: req.session.passport.user})
+  const userInDb = req.user
   if(username == userInDb.username){
     res.status(200).sendFile(path.join(__dirname, 'home.html'))
     return
@@ -148,7 +147,7 @@ app.get('/users/:username/userdata', async(req, res, next)=>{
   if(req.isAuthenticated()){
     const {username} = req.params
     if(req.session.passport){
-      const userInDb = await Users.findOne({_id: req.session.passport.user})
+      const userInDb = req.user
       if(username == userInDb.username){
         console.log("Recieved request to get user history...")
         res.status(200).json({history: userInDb.shortenedurls, env: req.get("host")})
